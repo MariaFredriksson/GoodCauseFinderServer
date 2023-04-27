@@ -11,29 +11,37 @@ import logger from 'morgan'
 // import { dirname, join } from 'node:path'
 // import { fileURLToPath } from 'node:url'
 import { router } from './routes/router.js'
-import { connectDB } from './config/mongoose.js'
-import helmet from 'helmet'
+// import { connectDB } from './config/mongoose.js'
+// import helmet from 'helmet'
+import cors from 'cors'
 
 try {
+  // TODO: change back later
   // Connect to MongoDB.
-  await connectDB()
+  // await connectDB()
 
   // Creates an Express application.
   const expressApp = express()
 
-  expressApp.use(helmet())
+  // Use cors, so that the API can be accessed from where I want to use it
+  expressApp.use(cors({
+    origin: 'http://localhost:3000'
+  }))
+
+  // TODO: change back later
+  // expressApp.use(helmet())
 
   // Allow bootstrap
   // Copied from classmates Jimmy and Anja
-  expressApp.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        defaultSrc: ["'self'", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se'],
-        scriptSrc: ["'self'", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js'],
-        styleSrc: ["'self' 'sha256-C10ckPX58XkzBNWy4e868LvAA4fm0QL2DtLaJ9RSRUg=' 'sha256-pOsDecCHeNhB9mZk/2O7+QXigySvqK5k2YS2NayMpOw='", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css']
-      }
-    })
-  )
+  // expressApp.use(
+  //   helmet.contentSecurityPolicy({
+  //     directives: {
+  //       defaultSrc: ["'self'", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se'],
+  //       scriptSrc: ["'self'", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js'],
+  //       styleSrc: ["'self' 'sha256-C10ckPX58XkzBNWy4e868LvAA4fm0QL2DtLaJ9RSRUg=' 'sha256-pOsDecCHeNhB9mZk/2O7+QXigySvqK5k2YS2NayMpOw='", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css']
+  //     }
+  //   })
+  // )
 
   // ^^ Is this needed?
   // Get the directory name of this module's path.
@@ -47,12 +55,13 @@ try {
   // The 'dev' format is a predefined string that stands for :method :url :status :response-time ms - :res[content-length]
   expressApp.use(logger('dev'))
 
+  // TODO: change back later, maybe
   // Parse requests of the content type application/x-www-form-urlencoded.
   // Populates the request object with a body object (req.body).
   // Takes the input from the user (the snippet) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
   // Takes the inputted snippet from the user and makes it available in the application
   // extended:false is about which library this middleware should use
-  expressApp.use(express.urlencoded({ extended: false }))
+  // expressApp.use(express.urlencoded({ extended: false }))
 
   // ^^ Are these needed?
   // Setup and use session middleware (https://github.com/expressjs/session)

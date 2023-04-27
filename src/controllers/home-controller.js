@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-import { Snippet } from '../models/snippet.js'
+// import { Snippet } from '../models/snippet.js'
 
 /**
  * Encapsulates a controller.
@@ -21,11 +21,31 @@ export class HomeController {
    */
   async index (req, res, next) {
     try {
-      const viewData = {
-        snippets: (await Snippet.find())
-          .map(snippet => snippet.toObject())
+      // const viewData = {
+      //   snippets: (await Snippet.find())
+      //     .map(snippet => snippet.toObject())
+      // }
+      // res.render('home/index', { viewData })
+      // res.message = 'Hi from the home controller!'
+
+      const data = {
+        blogs: [
+          {
+            title: 'My First Blog',
+            body: 'Why do we use it?\nIt is a long',
+            author: 'mario',
+            id: 1
+          },
+          {
+            title: 'Opening Party!',
+            body: 'Why do we use it?\nIt is a long established',
+            author: 'yoshi',
+            id: 2
+          }
+        ]
       }
-      res.render('home/index', { viewData })
+
+      res.status(200).json(data)
     } catch (error) {
       next(error)
     }
