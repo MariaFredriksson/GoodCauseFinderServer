@@ -7,12 +7,14 @@
 
 import express from 'express'
 import { router as homeRouter } from './home-router.js'
+import { router as projectsRouter } from './projects-router.js'
 // import { router as snippetsRouter } from './snippets-router.js'
 // import { router as usersRouter } from './users-router.js'
 
 export const router = express.Router()
 
 router.use('/', homeRouter)
+router.use('/projects', projectsRouter)
 // router.use('/snippets', snippetsRouter)
 // router.use('/users', usersRouter)
 
