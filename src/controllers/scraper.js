@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom'
 /**
  * A class that represents a general scraper for extracting elements from a webpage.
  */
-export class GeneralScraper {
+export class Scraper {
   /**
    * Extracts elements from a webpage.
    *
@@ -12,7 +12,7 @@ export class GeneralScraper {
    * @param {string} elementName - The name of the element to extract (e.g. 'a', 'div').
    * @param {object} ifAnyOptions - An optional options object that can be passed to the fetch function.
    *
-   * @returns {Promise} A promis of an array of HTML elements.
+   * @returns {Promise} A promise of an array of HTML elements.
    */
   async extractElements (url, elementName, ifAnyOptions) {
     const htmlText = await this.getHtmlText(url, ifAnyOptions)

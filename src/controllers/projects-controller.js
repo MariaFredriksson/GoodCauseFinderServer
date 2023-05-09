@@ -5,6 +5,8 @@
  * @version 1.0.0
  */
 
+import { Scraper } from './scraper.js'
+
 /**
  * Encapsulates a controller.
  */
@@ -61,6 +63,41 @@ export class ProjectsController {
         }
       ]
     }
+
+    this.scraper = new Scraper()
+
+    // this.scrapedData = await this.scraper.extractElements('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/', 'article')
+
+    // console.log(this.scrapedData);
+
+    // this.scraper.extractElements('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/', '#post-36680 > div > p:nth-child(2) > strong')
+    //   .then(scrapedData => {
+    //     this.scrapedData = scrapedData
+    //     console.log(this.scrapedData[0])
+    //     // Loop through the scraped data and console log out each element
+    //     // for (const element of this.scrapedData) {
+    //     //   console.dir(element)
+    //     // }
+    //     // document.querySelector("#post-36680 > div > p:nth-child(2) > strong")
+    //   })
+    //   .catch(error => {
+    //     console.error(error)
+    //   })
+
+    this.getScrapedData()
+  }
+
+  /**
+   * Gets scraped data.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async getScrapedData (req, res, next) {
+    this.scrapedData = await this.scraper.extractElements('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/', 'article')
+
+    console.log(`${this.scrapedData[0].innerHTML}`)
   }
 
   /**
