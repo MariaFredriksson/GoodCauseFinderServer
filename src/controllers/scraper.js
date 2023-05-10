@@ -80,6 +80,7 @@ export class Scraper {
         title: articleContent.querySelector('h1').innerText,
         imgURL: articleContent.querySelector('.featured_image img').src,
         text: articleContent.querySelector('.entry-content').innerText
+        // .replace(/\n/g, ' ')
       }
     })
 

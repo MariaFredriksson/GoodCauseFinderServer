@@ -87,6 +87,9 @@ export class ProjectsController {
     // this.getScrapedData()
 
     this.scraper.puppeteerScraper('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/')
+    this.scraper.puppeteerScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
+    this.scraper.puppeteerScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/barnrattsgrupper-for-okad-delaktighet/')
+    this.scraper.puppeteerScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/laxhjalp-efter-skoltid/')
   }
 
   /**
