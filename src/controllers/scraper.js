@@ -48,7 +48,7 @@ export class Scraper {
    *
    * @param {string} url - The URL of the webpage to scrape.
    */
-  async puppeteerScraper (url) {
+  async EHarticleScraper (url) {
     // Launch a new browser instance.
     const browser = await puppeteer.launch()
 
@@ -89,5 +89,53 @@ export class Scraper {
 
     // Close the browser.
     await browser.close()
+
+    return article
+  }
+
+  /**
+   * Scrapes a Erikshjälpen webpage using Puppeteer.
+   *
+   * @param {string} url - The URL of the webpage to scrape.
+   */
+  async erikshjalpenScraper (url) {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto(url)
+
+    // Look for the element with the class name entries, and inside it all the divs with the class name entry
+    // Loop though all these divs, and get the hrefs from all the a-tags inside them
+    const hrefs = await page.evaluate(() => {
+      const entries = document.querySelectorAll('.entries .entry')
+      return Array.from(entries).map(entry => {
+        const aTag = entry.querySelector('a')
+        return aTag.href
+      })
+    })
+
+    console.log(hrefs)
+
+    // Loop through the hrefs and go to each page, and scrape for a-tags there
+    for (const href of hrefs) {
+      await this.erikshjalpenSubScraper(href)
+    }
+
+    // Look for the element with class name postlist and get all the hrefs from all the a-tags inside it
+    const subHrefs = await page.evaluate(() => {
+      const aTags = document.querySelectorAll('.postlist a')
+      return Array.from(aTags).map(aTag => aTag.href)
+    })
+
+    console.log(subHrefs)
+
+    const articles = []
+
+    // Loop through the hrefs and scrape each article and push it to the articles array
+    for (const href of subHrefs) {
+      const article = await this.EHarticleScraper(href)
+      articles.push(article)
+    }
+
+    console.log(articles)
   }
 }
