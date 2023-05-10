@@ -84,7 +84,9 @@ export class ProjectsController {
     //     console.error(error)
     //   })
 
-    this.getScrapedData()
+    // this.getScrapedData()
+
+    this.scraper.puppeteerScraper('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/')
   }
 
   /**
