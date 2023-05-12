@@ -48,7 +48,7 @@ export class Scraper {
    *
    * @param {string} url - The URL of the webpage to scrape.
    */
-  async EHarticleScraper (url) {
+  async erikshjalpenArticleScraper (url) {
     // Launch a new browser instance.
     const browser = await puppeteer.launch()
 
@@ -94,6 +94,40 @@ export class Scraper {
   }
 
   /**
+   * Scrapes a Erikshjälpen subpage using Puppeteer.
+   *
+   * @param {string} url - The URL of the webpage to scrape.
+   * @returns {Array} An array of articles.
+   */
+  async erikshjalpenSubScraper (url) {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto(url)
+
+    // Look for the element with the class name postlist and get all the hrefs from all the a-tags inside it
+    const subHrefs = await page.evaluate(() => {
+      const aTags = document.querySelectorAll('.postlist a')
+      return Array.from(aTags).map(aTag => aTag.href)
+    })
+
+    console.log(subHrefs)
+
+    const articles = []
+
+    // Loop through the hrefs and scrape each article and push it to the articles array
+    for (const href of subHrefs) {
+      const article = await this.erikshjalpenArticleScraper(href)
+      articles.push(article)
+    }
+
+    console.log(articles)
+
+    await browser.close()
+
+    return articles
+  }
+
+  /**
    * Scrapes a Erikshjälpen webpage using Puppeteer.
    *
    * @param {string} url - The URL of the webpage to scrape.
@@ -115,27 +149,18 @@ export class Scraper {
 
     console.log(hrefs)
 
-    // Loop through the hrefs and go to each page, and scrape for a-tags there
-    for (const href of hrefs) {
-      await this.erikshjalpenSubScraper(href)
-    }
-
-    // Look for the element with class name postlist and get all the hrefs from all the a-tags inside it
-    const subHrefs = await page.evaluate(() => {
-      const aTags = document.querySelectorAll('.postlist a')
-      return Array.from(aTags).map(aTag => aTag.href)
-    })
-
-    console.log(subHrefs)
-
     const articles = []
 
-    // Loop through the hrefs and scrape each article and push it to the articles array
-    for (const href of subHrefs) {
-      const article = await this.EHarticleScraper(href)
-      articles.push(article)
+    // Loop through the hrefs and go to each page, and get the articles from each page, and add them to the articles array
+    for (const href of hrefs) {
+      const subArticles = await this.erikshjalpenSubScraper(href)
+
+      // Merge the subArticles array with the articles array, using the spread operator
+      articles.push(...subArticles)
     }
 
     console.log(articles)
+
+    await browser.close()
   }
 }

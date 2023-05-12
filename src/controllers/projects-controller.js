@@ -92,7 +92,9 @@ export class ProjectsController {
     // this.scraper.EHarticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/laxhjalp-efter-skoltid/')
 
     // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/barns-ratt-till-halsa/')
-    this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/vi-arbetar-for-barns-ratt-till-trygghet-och-skydd/')
+    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/vi-arbetar-for-barns-ratt-till-trygghet-och-skydd/')
+
+    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/')
   }
 
   /**
