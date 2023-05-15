@@ -84,7 +84,17 @@ export class ProjectsController {
     //     console.error(error)
     //   })
 
-    this.getScrapedData()
+    // this.getScrapedData()
+
+    // this.scraper.EHarticleScraper('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/')
+    // this.scraper.EHarticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
+    // this.scraper.EHarticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/barnrattsgrupper-for-okad-delaktighet/')
+    // this.scraper.EHarticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/laxhjalp-efter-skoltid/')
+
+    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/barns-ratt-till-halsa/')
+    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/vi-arbetar-for-barns-ratt-till-trygghet-och-skydd/')
+
+    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/')
   }
 
   /**
