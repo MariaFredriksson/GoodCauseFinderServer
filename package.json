@@ -1,7 +1,7 @@
 {
-  "name": "assignment-b1-crud-snippets",
+  "name": "good-cause-finder-server",
   "version": "1.0.0",
-  "description": "1DV026 - Assignment - CRUD snippets",
+  "description": "1DV613 - Good Cause Finder - Server",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
