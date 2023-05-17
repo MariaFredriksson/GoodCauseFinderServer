@@ -73,16 +73,37 @@ export class Scraper {
     //   )
     // )
 
+    // // Copy the URL
+    // const urlCopy = url
+    // // Get the id from the url
+    // const urlId = urlCopy.split('/').pop()
+
+    // // Split the URL by "/"
+    // const parts = url.split("/")
+    // // Get the second-to-last part of the URL
+    // const urlId = parts[parts.length - 2]
+
     // Get the article by getting the title, image URL and text from the page.
-    const article = await page.evaluate(() => {
+    // Pass url as an argument
+    const article = await page.evaluate((url) => {
       const articleContent = document.querySelector('#content .main-content')
+
+      // Split the URL by "/"
+      const parts = url.split('/')
+      // Get the second-to-last part of the URL
+      const urlId = parts[parts.length - 2]
+
       return {
         title: articleContent.querySelector('h1').innerText,
         imgURL: articleContent.querySelector('.featured_image img').src,
-        text: articleContent.querySelector('.entry-content').innerText
+        organization: 'Erikshjälpen',
+        text: articleContent.querySelector('.entry-content').innerText,
         // .replace(/\n/g, ' ')
+        articleURL: url,
+        id: urlId
       }
-    })
+      // Pass url as an argument when calling page.evaluate
+    }, url)
 
     // console.log(text)
     console.log(article)
