@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 
+import { Project } from '../models/project.js'
 import { Scraper } from './scraper.js'
 
 /**
@@ -86,9 +87,9 @@ export class ProjectsController {
 
     // this.getScrapedData()
 
-    this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/')
-    this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
-    this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/barnrattsgrupper-for-okad-delaktighet/')
+    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/')
+    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
+    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/barnrattsgrupper-for-okad-delaktighet/')
     // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/laxhjalp-efter-skoltid/')
 
     // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/barns-ratt-till-halsa/')
@@ -119,7 +120,19 @@ export class ProjectsController {
    */
   async index (req, res, next) {
     try {
-      const data = this.data
+      // const viewData = {
+      //   snippets: (await Snippet.find())
+      //     .map(snippet => snippet.toObject())
+      // }
+
+      // Get the projects from the database and turn them into plain javascript objects, and store them in the data object
+      const data = {
+        projects: (await Project.find()).map(project => project.toObject())
+      }
+      // const projects = (await Project.find()).map(project => project.toObject())
+
+      // const data = this.data
+
       res.status(200).json(data)
     } catch (error) {
       next(error)
@@ -135,14 +148,16 @@ export class ProjectsController {
    */
   async getOneProject (req, res, next) {
     // Get the id from the request
-    const id = req.params.id
+    const projectID = req.params.id
 
     // Find the project with the id
-    const project = this.data.projects.find(project => project.id === id)
+    // const project = this.data.projects.find(project => project.id === id)
+
+    const project = await Project.findOne({ id: projectID })
 
     // If the project is not found, send a 404 response
     if (!project) {
-      res.status(404).json({ error: `Project with id ${id} not found.` })
+      res.status(404).json({ error: `Project with id ${projectID} not found.` })
     }
 
     // If the project is found, send the project
