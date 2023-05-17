@@ -11,14 +11,14 @@ import logger from 'morgan'
 // import { dirname, join } from 'node:path'
 // import { fileURLToPath } from 'node:url'
 import { router } from './routes/router.js'
-// import { connectDB } from './config/mongoose.js'
+import { connectDB } from './config/mongoose.js'
 // import helmet from 'helmet'
 import cors from 'cors'
 
 try {
   // TODO: change back later
   // Connect to MongoDB.
-  // await connectDB()
+  await connectDB()
 
   // Creates an Express application.
   const expressApp = express()

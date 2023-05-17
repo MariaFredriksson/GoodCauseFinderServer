@@ -1,6 +1,7 @@
 
 // Import puppeteer for scraping dynamic websites.
 import puppeteer from 'puppeteer'
+import { Project } from '../models/project.js'
 
 /**
  * A class that represents a general scraper for extracting elements from a webpage.
@@ -48,6 +49,12 @@ export class Scraper {
 
     // Close the browser.
     await browser.close()
+
+    // Create a new instance of the Project model, and pass in the article object as an argument
+    const project = new Project(article)
+
+    // Save the project to the database
+    await project.save()
 
     return article
   }
