@@ -53,8 +53,16 @@ export class Scraper {
     // Create a new instance of the Project model, and pass in the article object as an argument
     const project = new Project(article)
 
-    // Save the project to the database
-    await project.save()
+    // Check if there already exists a project with the same id
+    const existingProject = await Project.findOne({ id: article.id })
+
+    // If there already exists a project with the same id, update it
+    if (existingProject) {
+      await Project.findOneAndUpdate({ id: article.id }, article)
+    } else {
+      // If there is no existing project, create a new one in the database
+      await project.save()
+    }
 
     return article
   }
