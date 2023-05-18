@@ -29,6 +29,8 @@ export class ProjectsController {
     // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/vi-arbetar-for-barns-ratt-till-trygghet-och-skydd/')
 
     // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/')
+
+    this.scraper.lakarmissionenScraper('https://www.lakarmissionen.se/gavoshop/')
   }
 
   /**

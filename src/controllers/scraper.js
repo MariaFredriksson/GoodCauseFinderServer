@@ -137,4 +137,47 @@ export class Scraper {
 
     await browser.close()
   }
+
+  /**
+   * Scrapes a Läkarmissionen page using Puppeteer.
+   *
+   * @param {string} url - The URL of the webpage to scrape.
+   * @returns {Array} An array of articles.
+   */
+  async lakarmissionenScraper (url) {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto(url)
+
+    // Look for the element with the class name product-list--normal, and inside it all the divs with the class name product-list__items, and inside them all the divs, and inside them all the elements with a class name cell
+    // Loop though all these divs, and get the hrefs from all the a-tags inside them
+    const hrefs = await page.evaluate(() => {
+      const productListNormal = document.querySelectorAll('.product-list--normal .product-list__items div .cell')
+      return Array.from(productListNormal).map(productListItems => {
+        const aTag = productListItems.querySelector('a')
+        return aTag.href
+      })
+    })
+
+    // Look for the element with the class name postlist and get all the hrefs from all the a-tags inside it
+    // const hrefs = await page.evaluate(() => {
+    //   const aTags = document.querySelectorAll('.postlist a')
+    //   return Array.from(aTags).map(aTag => aTag.href)
+    // })
+    // body > main > div > div: nth - child(5) > div.product - list__items > div > div: nth - child(1) > a
+
+    console.log(hrefs)
+
+    // const articles = []
+
+    // // Loop through the hrefs and scrape each article and push it to the articles array
+    // for (const href of hrefs) {
+    //   const article = await this.erikshjalpenArticleScraper(href)
+    //   articles.push(article)
+    // }
+
+    // console.log(articles)
+
+    await browser.close()
+  }
 }
