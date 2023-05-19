@@ -31,8 +31,10 @@ export class ProjectsController {
     // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/')
 
     // this.scraper.lakarmissionenScraper('https://www.lakarmissionen.se/gavoshop/')
-
     // this.scraper.lakarmissionenItemScraper('https://www.lakarmissionen.se/gavoshop/det-stora-utbildningspaketet/')
+
+    // this.scraper.rodaKorsetScraper('https://www.rodakorset.se/stod-oss/gavoshop/')
+    // this.scraper.rodaKorsetItemScraper('https://www.rodakorset.se/gavoshop/matpaket/')
   }
 
   /**

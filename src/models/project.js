@@ -19,7 +19,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
     minLength: 1,
-    maxLength: 200
+    maxLength: 500
   },
   organization: {
     type: String,

@@ -241,4 +241,112 @@ export class Scraper {
 
     await browser.close()
   }
+
+  /**
+   * Scrapes a webpage using Puppeteer.
+   *
+   * @param {string} url - The URL of the webpage to scrape.
+   */
+  async rodaKorsetProductScraper (url) {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto(url)
+
+    // Get the article by getting the title, image URL and text from the page.
+    // Pass url as an argument
+    const product = await page.evaluate((url) => {
+      const productContent = document.querySelector('.o-content div .o-content__area div .o-content-full .c-produktpaket')
+
+      // Split the URL by "/"
+      const parts = url.split('/')
+      // Get the second-to-last part of the URL
+      const urlId = parts[parts.length - 2]
+
+      // Select all the p-tags
+      const paragraphs = productContent.querySelectorAll('p')
+
+      // Make an array of all the selected elements, to allow for using map
+      // Map over the array and get the innerText from each element
+      const texts = Array.from(paragraphs).map((p, index) => {
+        // Exclude the last p-tag from the text key
+        if (index === paragraphs.length - 1) {
+          // Return an empty string for the last paragraph
+          return ''
+        } else {
+          return p.innerText
+        }
+      })
+
+      // Join the array of texts into one string, and separate them with a new line
+      const combinedText = texts.join('\n')
+
+      return {
+        title: productContent.querySelector('h1').innerText,
+        imgURL: productContent.querySelector('img').src,
+        organization: 'Svenska Röda Korset',
+        text: combinedText,
+        articleURL: url,
+        id: urlId
+      }
+      // Pass url as an argument when calling page.evaluate
+    }, url)
+
+    // console.log(text)
+    console.log(product)
+
+    // Close the browser.
+    await browser.close()
+
+    // Create a new instance of the Project model, and pass in the item object as an argument
+    const project = new Project(product)
+
+    // Check if there already exists a project with the same id
+    const existingProject = await Project.findOne({ id: product.id })
+
+    // If there already exists a project with the same id, update it
+    if (existingProject) {
+      await Project.findOneAndUpdate({ id: product.id }, product)
+    } else {
+      // If there is no existing project, create a new one in the database
+      await project.save()
+    }
+
+    return product
+  }
+
+  /**
+   * Scrapes a Svenska Röda Korset page using Puppeteer.
+   *
+   * @param {string} url - The URL of the webpage to scrape.
+   * @returns {Array} An array of articles.
+   */
+  async rodaKorsetScraper (url) {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto(url)
+
+    // Look for the element with the class name product-list--normal, and inside it all the divs with the class name product-list__items, and inside them all the divs, and inside them all the elements with a class name cell
+    // Loop though all these divs, and get the hrefs from all the a-tags inside them
+    const hrefs = await page.evaluate(() => {
+      const productListNormal = document.querySelectorAll('.o-content div .o-content__area div .produktgavoblock .c-produktgavoblock')
+      return Array.from(productListNormal).map(productListItems => {
+        const aTag = productListItems.querySelector('a')
+        return aTag.href
+      })
+    })
+
+    console.log(hrefs)
+
+    const items = []
+
+    // Loop through the hrefs and scrape each article and push it to the articles array
+    for (const href of hrefs) {
+      const item = await this.rodaKorsetProductScraper(href)
+      items.push(item)
+    }
+
+    console.log(items)
+
+    await browser.close()
+  }
 }
