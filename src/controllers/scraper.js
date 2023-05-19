@@ -8,6 +8,18 @@ import { Project } from '../models/project.js'
  */
 export class Scraper {
   /**
+   * Constructor.
+   */
+  constructor () {
+    // Initialize the header information
+    this.headers = {
+      'Scrapers-name': 'Maria Fredriksson',
+      'Scrapers-email': 'mf223wk@student.lnu.se',
+      'Scrapers-university': 'Linnéuniversitetet'
+    }
+  }
+
+  /**
    * Scrapes a webpage using Puppeteer.
    *
    * @param {string} url - The URL of the webpage to scrape.
@@ -18,6 +30,9 @@ export class Scraper {
 
     // Create a new page.
     const page = await browser.newPage()
+
+    // Set the headers for the page to provide my contact information.
+    await page.setExtraHTTPHeaders(this.headers)
 
     // Navigate to the page of the url.
     await page.goto(url)
@@ -76,6 +91,7 @@ export class Scraper {
   async erikshjalpenSubScraper (url) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
+    await page.setExtraHTTPHeaders(this.headers)
     await page.goto(url)
 
     // Look for the element with the class name postlist and get all the hrefs from all the a-tags inside it
@@ -109,6 +125,7 @@ export class Scraper {
   async erikshjalpenScraper (url) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
+    await page.setExtraHTTPHeaders(this.headers)
     await page.goto(url)
 
     // Look for the element with the class name entries, and inside it all the divs with the class name entry
@@ -146,6 +163,7 @@ export class Scraper {
   async lakarmissionenItemScraper (url) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
+    await page.setExtraHTTPHeaders(this.headers)
     await page.goto(url)
 
     // Get the article by getting the title, image URL and text from the page.
@@ -215,6 +233,7 @@ export class Scraper {
   async lakarmissionenScraper (url) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
+    await page.setExtraHTTPHeaders(this.headers)
     await page.goto(url)
 
     // Look for the element with the class name product-list--normal, and inside it all the divs with the class name product-list__items, and inside them all the divs, and inside them all the elements with a class name cell
@@ -250,6 +269,7 @@ export class Scraper {
   async rodaKorsetProductScraper (url) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
+    await page.setExtraHTTPHeaders(this.headers)
     await page.goto(url)
 
     // Get the article by getting the title, image URL and text from the page.
@@ -323,6 +343,7 @@ export class Scraper {
   async rodaKorsetScraper (url) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
+    await page.setExtraHTTPHeaders(this.headers)
     await page.goto(url)
 
     // Look for the element with the class name product-list--normal, and inside it all the divs with the class name product-list__items, and inside them all the divs, and inside them all the elements with a class name cell
