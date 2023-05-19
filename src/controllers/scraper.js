@@ -189,19 +189,19 @@ export class Scraper {
     // Close the browser.
     await browser.close()
 
-    // // Create a new instance of the Project model, and pass in the article object as an argument
-    // const project = new Project(article)
+    // Create a new instance of the Project model, and pass in the item object as an argument
+    const project = new Project(item)
 
-    // // Check if there already exists a project with the same id
-    // const existingProject = await Project.findOne({ id: article.id })
+    // Check if there already exists a project with the same id
+    const existingProject = await Project.findOne({ id: item.id })
 
-    // // If there already exists a project with the same id, update it
-    // if (existingProject) {
-    //   await Project.findOneAndUpdate({ id: article.id }, article)
-    // } else {
-    //   // If there is no existing project, create a new one in the database
-    //   await project.save()
-    // }
+    // If there already exists a project with the same id, update it
+    if (existingProject) {
+      await Project.findOneAndUpdate({ id: item.id }, item)
+    } else {
+      // If there is no existing project, create a new one in the database
+      await project.save()
+    }
 
     return item
   }
@@ -226,13 +226,6 @@ export class Scraper {
         return aTag.href
       })
     })
-
-    // Look for the element with the class name postlist and get all the hrefs from all the a-tags inside it
-    // const hrefs = await page.evaluate(() => {
-    //   const aTags = document.querySelectorAll('.postlist a')
-    //   return Array.from(aTags).map(aTag => aTag.href)
-    // })
-    // body > main > div > div: nth - child(5) > div.product - list__items > div > div: nth - child(1) > a
 
     console.log(hrefs)
 
