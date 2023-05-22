@@ -27,7 +27,8 @@
     "jsdom": "^22.0.0",
     "mongoose": "^6.7.0",
     "morgan": "^1.10.0",
-    "puppeteer": "^20.1.2"
+    "puppeteer": "^20.1.2",
+    "supertest": "^6.3.3"
   },
   "devDependencies": {
     "@lnu/eslint-config": "^1.1.7",

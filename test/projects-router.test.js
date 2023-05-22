@@ -2,9 +2,10 @@ import request from 'supertest'
 import { router } from '../src/routes/projects-router.js'
 import { ProjectsController } from '../src/controllers/projects-controller.js'
 import express from 'express'
+import { jest } from '@jest/globals'
 
 // Mocking the ProjectsController
-jest.mock('../controllers/projects-controller.js', () => ({
+jest.mock('../src/controllers/projects-controller.js', () => ({
   ProjectsController: jest.fn().mockImplementation(() => ({
     index: jest.fn(),
     getOneProject: jest.fn()
