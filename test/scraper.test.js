@@ -1,44 +1,34 @@
-// Import the necessary dependencies
 import puppeteer from 'puppeteer'
-import { Scraper } from '../src/controllers/scraper.js' // Assuming the Scraper class is in a separate file
-import { jest } from '@jest/globals'
 
-// Mock the Puppeteer launch and newPage functions
-jest.mock('puppeteer', () => ({
-  __esModule: true,
-  default: {
-    launch: jest.fn(),
-    connect: jest.fn()
-    // Add other necessary mock functions
-  }
-}))
-
-describe('Scraper', () => {
-  let scraper
+describe('Erikshjälpen Scraper', () => {
+  let browser
   let page
 
-  beforeEach(() => {
-    scraper = new Scraper()
-    page = {
-      setExtraHTTPHeaders: jest.fn(),
-      goto: jest.fn(),
-      evaluate: jest.fn()
-    }
-    puppeteer.launch.mockResolvedValue({
-      newPage: jest.fn().mockResolvedValue(page),
-      close: jest.fn()
+  beforeAll(async () => {
+    browser = await puppeteer.launch()
+    page = await browser.newPage()
+  })
+
+  afterAll(async () => {
+    await browser.close()
+  })
+
+  it('should find elements with class "entries", "entry", and a-tags with hrefs', async () => {
+    const url = 'https://erikshjalpen.se/vad-vi-gor/'
+    await page.goto(url)
+
+    // Checks if there are elements on the webpage that have the class name "entries". Within these "entries" elements, it further checks if there are elements with the class name "entry". Inside the "entry" elements, it verifies if there are a-tags with non-empty hrefs.
+    const hasEntriesWithEntryAndHrefs = await page.evaluate(() => {
+      const entries = Array.from(document.querySelectorAll('.entries'))
+      return entries.some(entry => {
+        const entryElements = entry.querySelectorAll('.entry')
+        return Array.from(entryElements).some(entryElement => {
+          const aTags = entryElement.querySelectorAll('a')
+          return Array.from(aTags).some(aTag => aTag.href !== '')
+        })
+      })
     })
-  })
 
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  test('should set extra headers correctly', async () => {
-    const url = 'https://example.com'
-
-    await scraper.erikshjalpenSubScraper(url)
-
-    expect(page.setExtraHTTPHeaders).toHaveBeenCalledWith(scraper.headers)
+    expect(hasEntriesWithEntryAndHrefs).toBe(true)
   })
 })
