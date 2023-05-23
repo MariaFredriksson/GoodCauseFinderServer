@@ -53,6 +53,7 @@ export class Scraper {
         organization: 'Erikshjälpen',
         text: articleContent.querySelector('.entry-content').innerText,
         // .replace(/\n/g, ' ')
+        category: ['utbildning'],
         articleURL: url,
         id: urlId
       }

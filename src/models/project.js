@@ -33,6 +33,9 @@ const schema = new mongoose.Schema({
     minLength: 1,
     maxLength: 10000
   },
+  category: {
+    type: Array
+  },
   articleURL: {
     type: String,
     required: true,
