@@ -59,6 +59,9 @@ export class Scraper {
       // Pass url as an argument when calling page.evaluate
     }, url)
 
+    // Set the categories by calling the function getCategories() and passing the title and text as arguments
+    article.category = this.getCategories(article.title, article.text)
+
     // console.log(text)
     console.log(article)
 
@@ -201,6 +204,9 @@ export class Scraper {
       // Pass url as an argument when calling page.evaluate
     }, url)
 
+    // Set the categories by calling the function getCategories() and passing the title and text as arguments
+    item.category = this.getCategories(item.title, item.text)
+
     // console.log(text)
     console.log(item)
 
@@ -311,6 +317,9 @@ export class Scraper {
       // Pass url as an argument when calling page.evaluate
     }, url)
 
+    // Set the categories by calling the function getCategories() and passing the title and text as arguments
+    product.category = this.getCategories(product.title, product.text)
+
     // console.log(text)
     console.log(product)
 
@@ -369,5 +378,55 @@ export class Scraper {
     console.log(items)
 
     await browser.close()
+  }
+
+  /**
+   * Gets the categories of a project.
+   *
+   * @param {string} title - The title of the project.
+   * @param {string} text - The text of the project.
+   *
+   * @returns {Array} An array of categories.
+   */
+  getCategories (title, text) {
+    // const availableCategories = ['hälsa', 'jämställdhet', 'utbildning']
+    const categories = []
+
+    // Create arrays of words that are related to each category
+    const healthKeywords = ['hälsa', 'sjukdom', 'sjukvård', 'sjukhus', 'vårdcentral', 'vård', 'hygien', 'sanitet', 'mödrahälsa', 'vaccin', 'vaccination', 'vaccinationer', 'diabetes', 'undernäring', 'diarré', 'cancer', 'aids', 'hiv', 'malaria', 'tuberkulos']
+
+    const equalityWords = ['jämställdhet', 'genus', 'likabehandling', 'kvinnor', 'kvinna', 'flickor', 'flicka', 'könsroller', 'jämställdhetsarbete', 'diskriminering', 'jämlikhet', 'kvotering', 'feminism', 'normer', 'normkritik', 'könsstereotyper', 'representation', 'jämställdhetspolitik', 'jämställdhetsindex', 'samtycke', 'kvinnojour', 'kvinnofrid', 'våldtäkt']
+
+    const educationKeywords = ['utbildning', 'skola', 'skolor', 'elev', 'elever', 'student', 'studenter', 'lärare', 'undervisning', 'lärande', 'kunskap', 'utbildningsprogram', 'utbildningsresurser', 'pedagogik', 'klassrum', 'utbildningspolitik', 'skolsystem', 'utbildningsmöjligheter']
+
+    // Split the title and text into arrays of words
+    let projectWords = title.split(' ')
+    projectWords = projectWords.concat(text.split(' '))
+
+    // Loop through the healthKeywords array and check if any of the words in the projectWords array match any of the words in the healthKeywords array
+    for (const healthKeyword of healthKeywords) {
+      if (projectWords.includes(healthKeyword)) {
+        categories.push('hälsa')
+        break
+      }
+    }
+
+    // Loop through the equalityWords array and check if any of the words in the projectWords array match any of the words in the equalityWords array
+    for (const equalityWord of equalityWords) {
+      if (projectWords.includes(equalityWord)) {
+        categories.push('jämställdhet')
+        break
+      }
+    }
+
+    // Loop through the educationKeywords array and check if any of the words in the projectWords array match any of the words in the educationKeywords array
+    for (const educationKeyword of educationKeywords) {
+      if (projectWords.includes(educationKeyword)) {
+        categories.push('utbildning')
+        break
+      }
+    }
+
+    return categories
   }
 }
