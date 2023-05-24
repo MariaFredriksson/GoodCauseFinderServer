@@ -39,7 +39,7 @@ export class Scraper {
 
     // Get the article by getting the title, image URL and text from the page.
     // Pass url as an argument
-    const article = await page.evaluate((url) => {
+    const article = await page.evaluate((url, getCategories) => {
       const articleContent = document.querySelector('#content .main-content')
 
       // Split the URL by "/"
@@ -47,18 +47,27 @@ export class Scraper {
       // Get the second-to-last part of the URL
       const urlId = parts[parts.length - 2]
 
+      // Get the title of the article
+      const titleToSet = articleContent.querySelector('h1').innerText
+
+      // Get the text of the article
+      const textToSet = articleContent.querySelector('.entry-content').innerText
+
+      // Set the categories by calling the function getCategories() and passing the title and text as arguments
+      const categoriesToSet = getCategories(titleToSet, textToSet)
+
       return {
-        title: articleContent.querySelector('h1').innerText,
+        title: titleToSet,
         imgURL: articleContent.querySelector('.featured_image img').src,
         organization: 'Erikshjälpen',
-        text: articleContent.querySelector('.entry-content').innerText,
+        text: textToSet,
         // .replace(/\n/g, ' ')
-        category: ['utbildning'],
+        category: categoriesToSet,
         articleURL: url,
         id: urlId
       }
       // Pass url as an argument when calling page.evaluate
-    }, url)
+    }, url, this.getCategories)
 
     // console.log(text)
     console.log(article)
@@ -370,5 +379,55 @@ export class Scraper {
     console.log(items)
 
     await browser.close()
+  }
+
+  /**
+   * Gets the categories of a project.
+   *
+   * @param {string} title - The title of the project.
+   * @param {string} text - The text of the project.
+   *
+   * @returns {Array} An array of categories.
+   */
+  getCategories (title, text) {
+    // const availableCategories = ['hälsa', 'jämställdhet', 'utbildning']
+    const categories = []
+
+    // Create arrays of words that are related to each category
+    const healthKeywords = ['hälsa', 'sjukdom', 'sjukvård', 'sjukhus', 'vårdcentral', 'vård', 'hygien', 'sanitet', 'mödrahälsa', 'vaccin', 'vaccination', 'vaccinationer', 'diabetes', 'undernäring', 'diarré', 'cancer', 'aids', 'hiv', 'malaria', 'tuberkulos']
+
+    const equalityWords = ['jämställdhet', 'genus', 'likabehandling', 'kvinnor', 'kvinna', 'flickor', 'flicka', 'könsroller', 'jämställdhetsarbete', 'diskriminering', 'jämlikhet', 'kvotering', 'feminism', 'normer', 'normkritik', 'könsstereotyper', 'representation', 'jämställdhetspolitik', 'jämställdhetsindex', 'samtycke', 'kvinnojour', 'kvinnofrid', 'våldtäkt']
+
+    const educationKeywords = ['utbildning', 'skola', 'skolor', 'elev', 'elever', 'student', 'studenter', 'lärare', 'undervisning', 'lärande', 'kunskap', 'utbildningsprogram', 'utbildningsresurser', 'pedagogik', 'klassrum', 'utbildningspolitik', 'skolsystem', 'utbildningsmöjligheter']
+
+    // Split the title and text into arrays of words
+    let projectWords = title.split(' ')
+    projectWords = projectWords.concat(text.split(' '))
+
+    // Loop through the healthKeywords array and check if any of the words in the projectWords array match any of the words in the healthKeywords array
+    for (const healthKeyword of healthKeywords) {
+      if (projectWords.includes(healthKeyword)) {
+        categories.push('hälsa')
+        break
+      }
+    }
+
+    // Loop through the equalityWords array and check if any of the words in the projectWords array match any of the words in the equalityWords array
+    for (const equalityWord of equalityWords) {
+      if (projectWords.includes(equalityWord)) {
+        categories.push('jämställdhet')
+        break
+      }
+    }
+
+    // Loop through the educationKeywords array and check if any of the words in the projectWords array match any of the words in the educationKeywords array
+    for (const educationKeyword of educationKeywords) {
+      if (projectWords.includes(educationKeyword)) {
+        categories.push('utbildning')
+        break
+      }
+    }
+
+    return categories
   }
 }
