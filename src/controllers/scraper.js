@@ -204,6 +204,9 @@ export class Scraper {
       // Pass url as an argument when calling page.evaluate
     }, url)
 
+    // Set the categories by calling the function getCategories() and passing the title and text as arguments
+    item.category = this.getCategories(item.title, item.text)
+
     // console.log(text)
     console.log(item)
 
@@ -313,6 +316,9 @@ export class Scraper {
       }
       // Pass url as an argument when calling page.evaluate
     }, url)
+
+    // Set the categories by calling the function getCategories() and passing the title and text as arguments
+    product.category = this.getCategories(product.title, product.text)
 
     // console.log(text)
     console.log(product)
