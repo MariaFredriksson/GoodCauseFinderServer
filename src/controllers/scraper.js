@@ -39,7 +39,7 @@ export class Scraper {
 
     // Get the article by getting the title, image URL and text from the page.
     // Pass url as an argument
-    const article = await page.evaluate((url, getCategories) => {
+    const article = await page.evaluate((url) => {
       const articleContent = document.querySelector('#content .main-content')
 
       // Split the URL by "/"
@@ -47,27 +47,20 @@ export class Scraper {
       // Get the second-to-last part of the URL
       const urlId = parts[parts.length - 2]
 
-      // Get the title of the article
-      const titleToSet = articleContent.querySelector('h1').innerText
-
-      // Get the text of the article
-      const textToSet = articleContent.querySelector('.entry-content').innerText
-
-      // Set the categories by calling the function getCategories() and passing the title and text as arguments
-      const categoriesToSet = getCategories(titleToSet, textToSet)
-
       return {
-        title: titleToSet,
+        title: articleContent.querySelector('h1').innerText,
         imgURL: articleContent.querySelector('.featured_image img').src,
         organization: 'Erikshjälpen',
-        text: textToSet,
+        text: articleContent.querySelector('.entry-content').innerText,
         // .replace(/\n/g, ' ')
-        category: categoriesToSet,
         articleURL: url,
         id: urlId
       }
       // Pass url as an argument when calling page.evaluate
-    }, url, this.getCategories)
+    }, url)
+
+    // Set the categories by calling the function getCategories() and passing the title and text as arguments
+    article.category = this.getCategories(article.title, article.text)
 
     // console.log(text)
     console.log(article)
