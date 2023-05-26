@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 
+import cron from 'node-cron'
 import express from 'express'
 // import session from 'express-session'
 import logger from 'morgan'
@@ -14,6 +15,7 @@ import { router } from './routes/router.js'
 import { connectDB } from './config/mongoose.js'
 // import helmet from 'helmet'
 import cors from 'cors'
+import { Scraper } from './controllers/scraper.js'
 
 try {
   // TODO: change back later
@@ -146,6 +148,20 @@ try {
   expressApp.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
+  })
+
+  // Set up the cron job after starting the server, to ensure that the server is running before the cron job is started
+  // The cron job is scheduled to run every Saturday at 14:15
+  cron.schedule('15 14 * * 6', () => {
+    console.log('Scraping started. Scraping organizations: Erikshjälpen, Läkarmissionen, Svenska Röda Korset')
+
+    const scraper = new Scraper()
+    // scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
+    scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/')
+    scraper.lakarmissionenScraper('https://www.lakarmissionen.se/gavoshop/')
+    scraper.rodaKorsetScraper('https://www.rodakorset.se/stod-oss/gavoshop/')
+
+    console.log('Scraping finished')
   })
 } catch (err) {
   console.error(err)
