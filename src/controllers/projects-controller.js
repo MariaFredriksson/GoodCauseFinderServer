@@ -6,7 +6,7 @@
  */
 
 import { Project } from '../models/project.js'
-import { Scraper } from './scraper.js'
+import { Scraper } from '../scrapers/scraper.js'
 
 /**
  * Encapsulates a controller.

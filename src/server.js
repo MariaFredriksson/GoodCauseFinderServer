@@ -15,7 +15,7 @@ import { router } from './routes/router.js'
 import { connectDB } from './config/mongoose.js'
 // import helmet from 'helmet'
 import cors from 'cors'
-import { Scraper } from './controllers/scraper.js'
+import { Scraper } from './scrapers/scraper.js'
 
 try {
   // TODO: change back later
