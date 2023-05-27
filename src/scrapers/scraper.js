@@ -25,64 +25,72 @@ export class Scraper {
    * @param {string} url - The URL of the webpage to scrape.
    */
   async erikshjalpenArticleScraper (url) {
-    // Launch a new browser instance.
-    const browser = await puppeteer.launch()
+    try {
+      // Launch a new browser instance.
+      const browser = await puppeteer.launch()
 
-    // Create a new page.
-    const page = await browser.newPage()
+      // Create a new page.
+      const page = await browser.newPage()
 
-    // Set the headers for the page to provide my contact information.
-    await page.setExtraHTTPHeaders(this.headers)
+      // Set the headers for the page to provide my contact information.
+      await page.setExtraHTTPHeaders(this.headers)
 
-    // Navigate to the page of the url.
-    await page.goto(url)
+      // Navigate to the page of the url.
+      await page.goto(url)
 
-    // Get the article by getting the title, image URL and text from the page.
-    // Pass url as an argument
-    const article = await page.evaluate((url) => {
-      const articleContent = document.querySelector('#content .main-content')
+      // Get the article by getting the title, image URL and text from the page.
+      // Pass url as an argument
+      const article = await page.evaluate((url) => {
+        const articleContent = document.querySelector('#content .main-content')
 
-      // Split the URL by "/"
-      const parts = url.split('/')
-      // Get the second-to-last part of the URL
-      const urlId = parts[parts.length - 2]
+        // Split the URL by "/"
+        const parts = url.split('/')
+        // Get the second-to-last part of the URL
+        const urlId = parts[parts.length - 2]
 
-      return {
-        title: articleContent.querySelector('h1').innerText,
-        imgURL: articleContent.querySelector('.featured_image img').src,
-        organization: 'Erikshjälpen',
-        text: articleContent.querySelector('.entry-content').innerText,
-        // .replace(/\n/g, ' ')
-        articleURL: url,
-        id: urlId
+        return {
+          title: articleContent.querySelector('h1').innerText,
+          imgURL: articleContent.querySelector('.featured_image img').src,
+          organization: 'Erikshjälpen',
+          text: articleContent.querySelector('.entry-content').innerText,
+          // .replace(/\n/g, ' ')
+          articleURL: url,
+          id: urlId
+        }
+        // Pass url as an argument when calling page.evaluate
+      }, url)
+
+      // Set the categories by calling the function getCategories() and passing the title and text as arguments
+      article.category = this.getCategories(article.title, article.text)
+
+      // console.log(text)
+      console.log(article)
+
+      // Close the browser.
+      await browser.close()
+
+      // Create a new instance of the Project model, and pass in the article object as an argument
+      const project = new Project(article)
+
+      // Check if there already exists a project with the same id
+      const existingProject = await Project.findOne({ id: article.id })
+
+      // If there already exists a project with the same id, update it
+      if (existingProject) {
+        await Project.findOneAndUpdate({ id: article.id }, article)
+      } else {
+        // If there is no existing project, create a new one in the database
+        await project.save()
       }
-      // Pass url as an argument when calling page.evaluate
-    }, url)
 
-    // Set the categories by calling the function getCategories() and passing the title and text as arguments
-    article.category = this.getCategories(article.title, article.text)
+      return article
+    } catch (error) {
+      // Log the error
+      console.error('Error occurred in erikshjalpenArticleScraper:', error)
 
-    // console.log(text)
-    console.log(article)
-
-    // Close the browser.
-    await browser.close()
-
-    // Create a new instance of the Project model, and pass in the article object as an argument
-    const project = new Project(article)
-
-    // Check if there already exists a project with the same id
-    const existingProject = await Project.findOne({ id: article.id })
-
-    // If there already exists a project with the same id, update it
-    if (existingProject) {
-      await Project.findOneAndUpdate({ id: article.id }, article)
-    } else {
-      // If there is no existing project, create a new one in the database
-      await project.save()
+      // The function will return undefined if an error occurs, which does not affect the execution of other scrapers.
+      // The other scrapers will continue to execute normally, regardless of whether an error occurred or not.
     }
-
-    return article
   }
 
   /**
