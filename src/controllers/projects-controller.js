@@ -6,37 +6,11 @@
  */
 
 import { Project } from '../models/project.js'
-import { Scraper } from '../scrapers/scraper.js'
 
 /**
  * Encapsulates a controller.
  */
 export class ProjectsController {
-  // Temporarily make a constructor that has all the data
-  // TODO: remove this when the database is implemented
-  /**
-   * Constructor.
-   */
-  constructor () {
-    this.scraper = new Scraper()
-
-    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/')
-    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
-    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/barnrattsgrupper-for-okad-delaktighet/')
-    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/laxhjalp-efter-skoltid/')
-
-    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/barns-ratt-till-halsa/')
-    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/vart-barnrattsarbete/vi-arbetar-for-barns-ratt-till-trygghet-och-skydd/')
-
-    // this.scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/')
-
-    // this.scraper.lakarmissionenScraper('https://www.lakarmissionen.se/gavoshop/')
-    // this.scraper.lakarmissionenItemScraper('https://www.lakarmissionen.se/gavoshop/det-stora-utbildningspaketet/')
-
-    // this.scraper.rodaKorsetScraper('https://www.rodakorset.se/stod-oss/gavoshop/')
-    // this.scraper.rodaKorsetItemScraper('https://www.rodakorset.se/gavoshop/matpaket/')
-  }
-
   /**
    * Gets all projects.
    *
