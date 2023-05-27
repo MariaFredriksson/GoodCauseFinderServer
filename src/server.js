@@ -126,21 +126,15 @@ try {
   // router is the middleware object
   expressApp.use('/', router)
 
-  // Error handler.
-  // Good that this is placed at the end of the middleware chain, so this handler can take care of the errors that are not caught in the other middlewares of routes
+  // Error handler middleware.
+  // Good that this is placed at the end of the middleware chain, so this handler can take care of the errors that are not caught in the other middlewares or routes
+  // By logging the error and sending an appropriate error response, you ensure that the server doesn't crash or hang in case of errors and that the client receives a clear indication of what went wrong.
   expressApp.use(function (err, req, res, next) {
-    // 500 Internal Server Error (in production, all other errors send this response).
-    if (req.app.get('env') !== 'development') {
-      // Sets a status of 500 to the response object
-      return res
-        .status(500)
-    }
+    // Log the error for debugging purposes
+    console.error(err)
 
-    // Development only!
-    // Only providing detailed error in development.
-
-    res
-      .status(err.status || 500)
+    // Send an appropriate response to the client
+    res.status(err.status || 500).send('Internal Server Error')
   })
 
   // Starts the HTTP server listening for connections.
@@ -156,10 +150,25 @@ try {
     console.log('Scraping started. Scraping organizations: Erikshjälpen, Läkarmissionen, Svenska Röda Korset')
 
     const scraper = new Scraper()
+
+    // When one wants to just test one of the scrapers, one can uncomment the line below and comment out the other scrapers
     // scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
+
+    // If an error occurs in any of the scrapers, it will be caught within the respective .catch() block.
+    // The error message, along with the name of the scraper function where the error occurred, will be logged to the console.
+    // The other scrapers will continue executing, and the cron job will complete its execution without stopping the server or terminating the entire process.
     scraper.erikshjalpenScraper('https://erikshjalpen.se/vad-vi-gor/')
+      .catch((error) => {
+        console.error('Error occurred in erikshjalpenScraper:', error)
+      })
     scraper.lakarmissionenScraper('https://www.lakarmissionen.se/gavoshop/')
+      .catch((error) => {
+        console.error('Error occurred in lakarmissionenScraper:', error)
+      })
     scraper.rodaKorsetScraper('https://www.rodakorset.se/stod-oss/gavoshop/')
+      .catch((error) => {
+        console.error('Error occurred in rodaKorsetScraper:', error)
+      })
 
     console.log('Scraping finished')
   })
