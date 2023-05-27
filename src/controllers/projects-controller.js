@@ -21,7 +21,7 @@ export class ProjectsController {
     this.scraper = new Scraper()
 
     // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-till-halsa/ratten-till-sin-egen-kropp/')
-    // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
+    this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/flickors-ratt-till-utbildning/')
     // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/barnrattsgrupper-for-okad-delaktighet/')
     // this.scraper.erikshjalpenArticleScraper('https://erikshjalpen.se/barns-ratt-utb-fritid/laxhjalp-efter-skoltid/')
 
