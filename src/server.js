@@ -147,6 +147,9 @@ try {
   // Set up the cron job after starting the server, to ensure that the server is running before the cron job is started
   // The cron job is scheduled to run every Saturday at 14:15
   cron.schedule('15 14 * * 6', () => {
+  // When one wants to test the cron scheduler, one can uncomment the line below, set the time and day to the current time and day (+ maybe 2 minutes), and comment out the line above
+  // cron.schedule('44 16 * * 6', () => {
+    //
     console.log('Scraping started. Scraping organizations: Erikshjälpen, Läkarmissionen, Svenska Röda Korset')
 
     const scraper = new Scraper()

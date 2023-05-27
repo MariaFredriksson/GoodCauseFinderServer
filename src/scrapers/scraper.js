@@ -431,26 +431,10 @@ export class Scraper {
 
     const educationKeywords = ['utbildning', 'skola', 'skolor', 'elev', 'elever', 'student', 'studenter', 'lärare', 'undervisning', 'lärande', 'kunskap', 'utbildningsprogram', 'utbildningsresurser', 'pedagogik', 'klassrum', 'utbildningspolitik', 'skolsystem', 'utbildningsmöjligheter']
 
-    // Split the title and text into arrays of words, and make them lowercase
-    // let projectWords = title.split(' ').map(word => word.toLowerCase())
-    // projectWords = projectWords.concat(text.split(' ')).map(word => word.toLowerCase())
-
-    // const projectWords = [...title.split(/[^\wåäö]+/), ...text.split(/[^\wåäö]+/)].map(word => word.toLowerCase())
-
-    // const projectWords = [...title.split(/^[\p{L}]+$/u), ...text.split(/^[\p{L}]+$/u)].map(word => word.toLowerCase())
-
     // Split the title and text into arrays of words, combines them into one array (using the spread operator), and make the words lowercase
     // Matches any character that is not a word character (\w) or the specific Swedish characters â, á, à, é, è, Á, À, É, È, å, ä, ö, Å, Ä, and Ö.
     // By splitting the string based on this pattern, you effectively remove symbols, punctuation marks, and non-word characters while preserving the Swedish characters.
     const projectWords = [...title.split(/[^\wâáàéèÁÀÉÈåäöÅÄÖ]+/), ...text.split(/[^\wâáàéèÁÀÉÈåäöÅÄÖ]+/)].map(word => word.toLowerCase())
-
-    // let projectWords = title.split(/^[\p{L}]+$/u).map(word => word.toLowerCase())
-    // projectWords = projectWords.concat(text.split(/^[\p{L}]+$/u)).map(word => word.toLowerCase())
-
-    // const projectWords = [
-    //   ...title.matchAll(/^[\p{L}]+$/gu),
-    //   ...text.matchAll(/^[\p{L}]+$/gu)
-    // ].map(match => match[0].toLowerCase())
 
     console.log('projectWords')
     console.log(projectWords)
