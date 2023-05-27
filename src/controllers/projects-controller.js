@@ -39,18 +39,22 @@ export class ProjectsController {
    * @param {Function} next - Express next middleware function.
    */
   async getOneProject (req, res, next) {
-    // Get the id from the request
-    const projectID = req.params.id
+    try {
+      // Get the id from the request
+      const projectID = req.params.id
 
-    // Find the project with the id
-    const project = await Project.findOne({ id: projectID })
+      // Find the project with the id
+      const project = await Project.findOne({ id: projectID })
 
-    // If the project is not found, send a 404 response
-    if (!project) {
-      res.status(404).json({ error: `Project with id ${projectID} not found.` })
-    } else {
-      // If the project is found, send the project
-      res.status(200).json(project)
+      // If the project is not found, send a 404 response
+      if (!project) {
+        res.status(404).json({ error: `Project with id ${projectID} not found.` })
+      } else {
+        // If the project is found, send the project
+        res.status(200).json(project)
+      }
+    } catch (error) {
+      next(error)
     }
   }
 }

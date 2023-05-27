@@ -22,8 +22,7 @@ router.use('/projects', projectsRouter)
 router.use('*', (req, res, next) => {
   const error = new Error('Not Found')
 
-  // TODO: set another status code
-  // error.status = 404
+  error.status = 404
 
   // Sends the error to the the next middleware, which will trigger the error handler
   next(error)
