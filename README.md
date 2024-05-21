@@ -5,8 +5,12 @@
 
 Good Cause Finder is a web application that makes it easier for people to find and support aid projects that resonate with their passions. By gathering projects from different organizations on one platform, users can filter projects based on themes to find suitable ones to support. The application is designed for anyone who wants to make a positive difference and contribute to global sustainable development. The web-application offers a simple and user-friendly design for filtering, and reading project information. Users can easily make a donation by clicking on a button to visit the individual project pages.
 
-The deployed application can be found at:
-[Good Cause Finder](https://cscloud7-221.lnu.se/good-cause-finder/)
+### Useful links
+- Front-end repository: [Good Cause Finder](https://github.com/upend0/GoodCauseFinder)
+- Back-end repository: [Good Cause Finder Server](https://github.com/upend0/GoodCauseFinderServer)
+- Video demonstration: [Good Cause Finder Video](https://www.loom.com/share/1dc1c8b943e14ae3ac55bd124210be5a)
+- Wiki: [Good Cause Finder Wiki](https://gitlab.lnu.se/1dv613/student/mf223wk/project/-/wikis/home)
+- Deployed application (no longer active): [Good Cause Finder](https://cscloud7-221.lnu.se/good-cause-finder/)
 
 ## Table of Contents
 - [Introduction](#introduction)
